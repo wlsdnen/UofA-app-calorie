@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.jojinwoo.learn2caltest">
+
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Demographic" android:label="Demographic" android:configChanges="orientation|keyboardHidden|screenSize"  />
+        <activity android:name=".Quiz" android:label="Quiz" android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".Score" android:label="Score" android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".Final" android:label="Final" android:configChanges="orientation|keyboardHidden|screenSize" />
+
+    </application>
+
+</manifest>
