@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.triggertrap.seekarc.SeekArc;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -30,7 +33,7 @@ public class Quiz extends AppCompatActivity {
     private int pointer;
     private String time_start, time_end;
     ImageObject imgObj;
-    SeekBar mSeekBar;
+    SeekArc mSeekBar;
     TextView mValue, mPage;
 
     @Override
@@ -47,7 +50,7 @@ public class Quiz extends AppCompatActivity {
         {
             pointer = 0;
             imgObj = new ImageObject(this);
-            mSeekBar = (SeekBar) findViewById(R.id.seekBar);
+            mSeekBar = (SeekArc) findViewById(R.id.seekBar);
             mValue = (TextView) findViewById(R.id.current_value);
             mPage = (TextView) findViewById(R.id.pageQuiz);
             mPage.setText(Integer.toString(pointer+OFFSET_PAGE)+"/"+Integer.toString(NUM_OF_QUIZ+OFFSET_PAGE));
@@ -55,18 +58,23 @@ public class Quiz extends AppCompatActivity {
             setImage(pointer);
             time_start = getCurrentTime();
         }
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) { mValue.setText(Integer.toString(i)); }
+        mSeekBar.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekArc seekArc) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStartTrackingTouch(SeekArc seekArc) {
+            }
 
+            @Override
+            public void onProgressChanged(SeekArc seekArc, int progress,
+                                          boolean fromUser) {
+                mValue.setText(String.valueOf(progress));
+            }
         });
+        
     }
 
     private void sendResult(int estimate)
@@ -101,16 +109,16 @@ public class Quiz extends AppCompatActivity {
         int est = mSeekBar.getProgress();
 
         imgObj.setEstimates(pointer, est);
-        imgObj.setError(pointer);
         time_end = getCurrentTime();
 
         sendResult(est);
 
         Intent intent = new Intent(this, Score.class);
         intent.putExtra("pointer", pointer);
-        intent.putIntegerArrayListExtra("estimates", imgObj.getEstimates());
-        intent.putIntegerArrayListExtra("labels", imgObj.getLabels());
         intent.putIntegerArrayListExtra("errors", imgObj.getErrors());
+        intent.putIntegerArrayListExtra("result", imgObj.getResult());
+        intent.putExtra("actual", imgObj.getLabel(pointer));
+        intent.putExtra("estimate",   imgObj.getEstimate(pointer));
         startActivityForResult(intent, EST_IN);
     }
 
@@ -126,7 +134,6 @@ public class Quiz extends AppCompatActivity {
 
         if (resultCode == EST_OUT)
         {
-            imgObj.setEstimateResult(pointer, data.getIntExtra("result", 0));
             if (pointer < NUM_OF_QUIZ)
             {
                 pointer = pointer + 1;
@@ -139,7 +146,7 @@ public class Quiz extends AppCompatActivity {
             else // 문제를 다 풀었을 때, Final page로 이동
             {
                 Intent intent = new Intent(this, Final.class);
-                intent.putIntegerArrayListExtra("estimates", imgObj.getEstResult());
+                intent.putIntegerArrayListExtra("result", imgObj.getResult());
                 startActivityForResult(intent, RESULT_OUT);
             }
         }

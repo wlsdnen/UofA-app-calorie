@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +29,6 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity
 {
     public static final int PREF_READ_WRITE_MODE = 0;
-    private static final String TAG = "TAG";
     private static final String DEVICE_NAME = "ANDROID";
 
     @Override
@@ -87,87 +88,6 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    // AsyncTask 공부.
-    class InsertData extends AsyncTask<String, Void, String> {
-        ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = ProgressDialog.show(MainActivity.this,
-                    "Please Wait", null, true, true);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            progressDialog.dismiss();
-            // MySQL 연결 제대로 되었는지 확인하고 성공/실패 여뷰 tv에 setText로 보여주기.
-            Log.d(TAG, "POST response  - " + result);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String name = (String)params[0];
-            String serverURL = "http://jwdrive.myqnapcloud.com/mInitUser.php";
-            String postParameters = "user_id=" + name;
-
-            try
-            {
-                URL url = new URL(serverURL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.setRequestMethod("POST");
-                //httpURLConnection.setRequestProperty("content-type", "application/json");
-                httpURLConnection.setDoInput(true);
-                httpURLConnection.connect();
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
-                outputStream.flush();
-                outputStream.close();
-
-                int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG, "POST response code - " + responseStatusCode);
-
-                InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
-                }
-                else{
-                    inputStream = httpURLConnection.getErrorStream();
-                }
-
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-
-                while((line = bufferedReader.readLine()) != null){
-                    sb.append(line);
-                }
-
-                bufferedReader.close();
-
-                return sb.toString();
-
-            }
-            catch (Exception e)
-            {
-                Log.d(TAG, "InsertData: Error ", e);
-                return new String("Error: " + e.getMessage());
-            }
-
-        }
-    }
-
-
     private String[] getScreenDimension(){
         DisplayMetrics dm = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -194,4 +114,5 @@ public class MainActivity extends AppCompatActivity
         String countryCodeValue = tm.getNetworkCountryIso();
         return countryCodeValue;
     }
+
 }

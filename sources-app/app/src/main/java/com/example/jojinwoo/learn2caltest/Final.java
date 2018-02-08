@@ -90,7 +90,7 @@ public class Final extends AppCompatActivity implements View.OnClickListener
     public void setResultText()
     {
         Intent intent = getIntent();
-        ArrayList<Integer> results = intent.getIntegerArrayListExtra("estimates");
+        ArrayList<Integer> results = intent.getIntegerArrayListExtra("result");
 
         int NUM_OF_OVEREST, NUM_OF_UNDEREST, NUM_OF_CORRECT;
 

@@ -30,7 +30,7 @@
     <string name="in">in</string>
     <string name="kg">kg</string>
     <string name="lbs">lbs</string>
-    <string name="calories">calories</string>
+    <string name="calories">Calories</string>
     <string name="result_total">Total: </string>
     <string name="result_correct">Correct: </string>
     <string name="result_overestimation">Over estimation: </string>
@@ -38,4 +38,5 @@
     <string name="final_show">SHOW MORE RESULTS</string>
     <string name="final_play">GO PLAY AGAIN</string>
     <string name="final_title">FINAL RESULTS</string>
+    <string name="default_value">0</string>
 </resources>

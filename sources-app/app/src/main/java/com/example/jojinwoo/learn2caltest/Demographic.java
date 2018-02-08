@@ -93,12 +93,10 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
 
             case R.id.spinner2:
                 h_state = position;
-                Log.e("h_state changed: ", Integer.toString(h_state));
                 break;
 
             case R.id.spinner3:
                 w_state = position;
-                Log.e("w_state changed: ", Integer.toString(w_state));
                 break;
         }
         // 성별, 키 그리고 체중 선택했을 때 어떻게 데이터 처리할 것인지 추가.
@@ -110,18 +108,18 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onClick(View v)
     {
-
-        Log.d("DEMO-",Integer.toString(v.getId()));
-
         switch (v.getId())
         {
             case R.id.et_height:
                 if (h_state == 0) setDialog(R.layout.height_ftin);
                 else if (h_state == 1) setDialog(R.layout.height_cm);
+                //
+                //
                 break;
             case R.id.et_weight:
                 if (w_state == 0) setDialog(R.layout.weight_lbs);
                 else if (w_state == 1) setDialog(R.layout.weight_kg);
+                //
                 break;
             case R.id.submit:
                 submitClicked();
@@ -155,12 +153,10 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
         stringBuilder.append("&age="+age);
 
         // Height
-        String height = et1.getText().toString();
-        stringBuilder.append("&height=" + height);
+        stringBuilder.append("&height=" + cm);
 
         // Weight
-        String weight = et2.getText().toString();
-        stringBuilder.append("&weight=" + weight);
+        stringBuilder.append("&weight=" + kg);
 
         InsertData task = new InsertData();
         task.execute(stringBuilder.toString(), "mUpdateDemographic.php");
@@ -205,6 +201,7 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ft = np_ft.getValue();
                                 in = np_in.getValue();
+                                ftin2cm(ft, in);
                                 et1.setText(Integer.toString(ft)+ " " + Integer.toString(in));
                             }
                         })
@@ -246,6 +243,7 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 lbs = np_lbs.getValue();
+                                lbs2kg(lbs);
                                 et2.setText(Integer.toString(lbs));
                             }
                         })
@@ -272,6 +270,14 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
                 break;
         }
 
+    }
+
+    public void lbs2kg (int lbs) {
+        this.kg = (int)(lbs * 0.453592);
+    }
+
+    public void ftin2cm (int ft, int in) {
+        this.cm = (int)(2.54 * ((ft * 12) + in));
     }
 
 }
