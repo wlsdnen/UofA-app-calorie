@@ -74,7 +74,7 @@ public class Quiz extends AppCompatActivity {
                 mValue.setText(String.valueOf(progress));
             }
         });
-        
+
     }
 
     private void sendResult(int estimate)
@@ -139,8 +139,8 @@ public class Quiz extends AppCompatActivity {
                 pointer = pointer + 1;
                 mPage.setText(Integer.toString(pointer+OFFSET_PAGE)+"/"+Integer.toString(NUM_OF_QUIZ+OFFSET_PAGE));
                 setImage(pointer);
-                mSeekBar.setProgress(500);
-                mValue.setText("500");
+                mSeekBar.setProgress(0);
+                mValue.setText("0");
                 time_start = getCurrentTime();
             }
             else // 문제를 다 풀었을 때, Final page로 이동
