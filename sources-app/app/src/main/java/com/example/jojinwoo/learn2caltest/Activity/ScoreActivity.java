@@ -1,4 +1,4 @@
-package com.example.jojinwoo.learn2caltest;
+package com.example.jojinwoo.learn2caltest.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.jojinwoo.learn2caltest.Data.DataManager;
+import com.example.jojinwoo.learn2caltest.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,26 +21,24 @@ import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.ColumnChartView;
-import lecho.lib.hellocharts.view.PreviewColumnChartView;
 
-import static com.example.jojinwoo.learn2caltest.Quiz.NUM_OF_QUIZ;
-import static com.example.jojinwoo.learn2caltest.Quiz.OFFSET_PAGE;
 import static java.lang.Math.abs;
-import static java.lang.Math.pow;
 
 /**
  * Created by jojinwoo on 2018-01-17.
  */
 
-public class Score extends Activity {
+public class ScoreActivity extends Activity {
 
-    private static final int RESULT_IN = 100;
+    DataManager dataManager;
+
     private static final int RESULT_OUT = 101;
+    private int currentPage;
 
-    ArrayList<Integer> errors;
-    ArrayList<Integer> result;
-    private int cursor;
-    TextView act, est, mention, mPage;
+    TextView act;
+    TextView est;
+    TextView mention;
+    TextView mPage;
 
     private ColumnChartView chart;
     private ColumnChartData data;
@@ -59,17 +59,15 @@ public class Score extends Activity {
         mention = (TextView)findViewById(R.id.result_mention);
         mPage = (TextView)findViewById(R.id.pageScore);
 
-        Intent intent = getIntent();
-        cursor = intent.getIntExtra("pointer", 0);
-        int estimate = intent.getIntExtra("estimate", 0);
-        int actual   = intent.getIntExtra("actual",0);
-        errors = intent.getIntegerArrayListExtra("errors");
-        result = intent.getIntegerArrayListExtra("result");
+        dataManager = DataManager.getInstance(this);
 
-        act.setText(Integer.toString(actual));
-        est.setText(Integer.toString(estimate));
-        mPage.setText(Integer.toString(cursor+OFFSET_PAGE)+"/"+Integer.toString(NUM_OF_QUIZ+OFFSET_PAGE));
-        setText(result.get(cursor));
+        Intent intent = getIntent();
+        currentPage = intent.getIntExtra("currentPage", 0);
+
+        act.setText(Integer.toString(dataManager.getImageData(currentPage).getCalorie()));
+        est.setText(Integer.toString(dataManager.getImageData(currentPage).getUserAnswer()));
+        mPage.setText(Integer.toString(currentPage + QuizActivity.OFFSET_PAGE)+"/"+Integer.toString(QuizActivity.NUM_OF_QUIZ+ QuizActivity.OFFSET_PAGE));
+        setText(dataManager.getImageData(currentPage).getResult());
 
         chart = (ColumnChartView) findViewById(R.id.chart);
         chart.setOnValueTouchListener(new ValueTouchListener());
@@ -79,7 +77,6 @@ public class Score extends Activity {
     public void onClickNext (View v)
     {
         Intent intent = new Intent();
-//        intent.putExtra("result", );
         setResult(RESULT_OUT, intent);
         finish();
     }
@@ -109,7 +106,7 @@ public class Score extends Activity {
      */
     private void setGraphData() {
 
-        int numColumns = cursor + OFFSET_PAGE;
+        int numColumns = currentPage + QuizActivity.OFFSET_PAGE;
         List<Column> columns = new ArrayList<Column>();
         List<SubcolumnValue> values;
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
@@ -118,8 +115,8 @@ public class Score extends Activity {
 
             values = new ArrayList<SubcolumnValue>();
 
-            int error = errors.get(i) * -1;
-            int state = result.get(i);
+            int error = dataManager.getImageData(i).getError();
+            int state = dataManager.getImageData(i).getResult();
 
             if (state == 0)
                 values.add(new SubcolumnValue(error, ChartUtils.COLOR_GREEN));
@@ -133,7 +130,7 @@ public class Score extends Activity {
             column.setHasLabelsOnlyForSelected(hasLabelForSelected);
             columns.add(column);
 
-            axisValues.add(new AxisValue(i, Integer.toString(i+OFFSET_PAGE).toCharArray()));
+            axisValues.add(new AxisValue(i, Integer.toString(i+ QuizActivity.OFFSET_PAGE).toCharArray()));
         }
 
         data = new ColumnChartData(columns);
@@ -142,7 +139,7 @@ public class Score extends Activity {
             Axis axisX = new Axis(axisValues);
             Axis axisY = new Axis().setHasLines(true);
             if (hasAxesNames) {
-                axisX.setName("Quiz");
+                axisX.setName("QuizActivity");
                 axisY.setName("Erros");
             }
             data.setAxisXBottom(axisX);

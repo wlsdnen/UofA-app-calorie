@@ -1,6 +1,5 @@
-package com.example.jojinwoo.learn2caltest;
+package com.example.jojinwoo.learn2caltest.Activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,13 +17,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import static com.example.jojinwoo.learn2caltest.MainActivity.PREF_READ_WRITE_MODE;
+import com.example.jojinwoo.learn2caltest.Data.DataManager;
+import com.example.jojinwoo.learn2caltest.Data.SendQuery;
+import com.example.jojinwoo.learn2caltest.Data.User;
+import com.example.jojinwoo.learn2caltest.R;
 
 /**
  * Created by jojinwoo on 2018-01-07.
  */
-
-public class Demographic extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener
+public class DemographicActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener
 {
     private static final int FT_MIN = 4;
     private static final int FT_MAX = 7;
@@ -38,9 +38,10 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
     private static final int KG_MIN = 15;
     private static final int KG_MAX = 350;
 
-    int w_state, h_state;
+    private DataManager dataManager;
+
+    int weight_selected, height_selected;
     ArrayAdapter<CharSequence> adspin, adspin2, adspin3;
-    Button btnSubmit;
     Spinner spin, spin2, spin3;
     EditText et1, et2;
     RadioGroup rg;
@@ -52,6 +53,8 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demographic);
 
+        dataManager = dataManager.getInstance(this);
+
         spin = (Spinner)findViewById(R.id.spinner);
         spin2 = (Spinner)findViewById(R.id.spinner2);
         spin3 = (Spinner)findViewById(R.id.spinner3);
@@ -60,6 +63,7 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
         adspin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(adspin);
         spin.setOnItemSelectedListener(this);
+        spin.setSelection(3);
 
         adspin2 = ArrayAdapter.createFromResource(this, R.array.height, android.R.layout.simple_spinner_item);
         adspin2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -71,7 +75,6 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
         spin3.setAdapter(adspin3);
         spin3.setOnItemSelectedListener(this);
 
-        spin.setSelection(3);
         et1 = (EditText)findViewById(R.id.et_height);
         et2 = (EditText)findViewById(R.id.et_weight);
         et1.setOnClickListener(this);
@@ -79,8 +82,7 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
 
         rg = (RadioGroup)findViewById(R.id.radioGender);
 
-        btnSubmit = (Button)findViewById(R.id.submit);
-        btnSubmit.setOnClickListener(this);
+        findViewById(R.id.submit).setOnClickListener(this);
     }
 
     @Override
@@ -92,11 +94,11 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
                 break;
 
             case R.id.spinner2:
-                h_state = position;
+                height_selected = position;
                 break;
 
             case R.id.spinner3:
-                w_state = position;
+                weight_selected = position;
                 break;
         }
         // 성별, 키 그리고 체중 선택했을 때 어떻게 데이터 처리할 것인지 추가.
@@ -111,15 +113,12 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
         switch (v.getId())
         {
             case R.id.et_height:
-                if (h_state == 0) setDialog(R.layout.height_ftin);
-                else if (h_state == 1) setDialog(R.layout.height_cm);
-                //
-                //
+                if (height_selected == 0) setDialog(R.layout.height_ftin);
+                else if (height_selected == 1) setDialog(R.layout.height_cm);
                 break;
             case R.id.et_weight:
-                if (w_state == 0) setDialog(R.layout.weight_lbs);
-                else if (w_state == 1) setDialog(R.layout.weight_kg);
-                //
+                if (weight_selected == 0) setDialog(R.layout.weight_lbs);
+                else if (weight_selected == 1) setDialog(R.layout.weight_kg);
                 break;
             case R.id.submit:
                 submitClicked();
@@ -127,21 +126,17 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
-    public void submitClicked()
-    {
-        // 1. 모두 입력 했는지 체크 - yet
-        // 2. demographic 전송 - done
-        // 3. 현재 flow에 맞는 다음 페이지 선택 - done
-        SharedPreferences preferences = getSharedPreferences("pref", PREF_READ_WRITE_MODE);
-        SharedPreferences.Editor edit = preferences.edit();
+    public void submitClicked() {
+
+        SharedPreferences preferences = dataManager.getSharedPreferences(this);
+        SharedPreferences.Editor edit = dataManager.getEditor();
 
         StringBuilder stringBuilder = new StringBuilder();
         edit.putBoolean("demographic", true);
         edit.commit();
 
         // User ID
-        String user_id = preferences.getString("user_id", null);
-        stringBuilder.append("&uid=" + user_id);
+        stringBuilder.append("&uid=" + User.UID.getValue());
 
         // Gender
         RadioButton rb = (RadioButton)findViewById(rg.getCheckedRadioButtonId());
@@ -158,17 +153,16 @@ public class Demographic extends AppCompatActivity implements AdapterView.OnItem
         // Weight
         stringBuilder.append("&weight=" + kg);
 
-        InsertData task = new InsertData();
+        SendQuery task = new SendQuery();
         task.execute(stringBuilder.toString(), "mUpdateDemographic.php");
 
         String next = preferences.getString("NextFinalPage", null);
 
         if (next.equals("PLAY"))
-            startActivity(new Intent(this, Quiz.class));
+            startActivity(new Intent(this, QuizActivity.class));
 
         else if (next.equals("RESULT"))
             startActivity(new Intent(this, MainActivity.class));
-
     }
 
     public void setDialog(int id)

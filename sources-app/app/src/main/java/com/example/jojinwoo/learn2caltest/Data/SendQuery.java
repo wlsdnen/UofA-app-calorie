@@ -1,4 +1,4 @@
-package com.example.jojinwoo.learn2caltest;
+package com.example.jojinwoo.learn2caltest.Data;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -15,29 +15,25 @@ import static android.content.ContentValues.TAG;
  * Created by jojinwoo on 2018-01-31.
  */
 
-public class InsertData extends AsyncTask<String, Void, String> {
+public class SendQuery extends AsyncTask<String, Void, String> {
 
     private static final String serverURL = "http://jwdrive.myqnapcloud.com/";
 
     @Override
     protected void onPreExecute() {
-
         super.onPreExecute();
     }
 
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-
         Log.d(TAG, "POST response  - " + result);
     }
 
     @Override
     protected String doInBackground(String... params) {
-
         String postParameters = params[0];
         String postAddress = params[1];
-
         try
         {
             URL url = new URL(serverURL+postAddress);
@@ -62,7 +58,7 @@ public class InsertData extends AsyncTask<String, Void, String> {
             if(responseStatusCode == HttpURLConnection.HTTP_OK) {
                 inputStream = httpURLConnection.getInputStream();
             }
-            else{
+            else {
                 inputStream = httpURLConnection.getErrorStream();
             }
 
@@ -79,15 +75,12 @@ public class InsertData extends AsyncTask<String, Void, String> {
             bufferedReader.close();
 
             return sb.toString();
-
         }
-        catch (Exception e)
-        {
-            Log.d(TAG, "InsertData: Error ", e);
+        catch (Exception e) {
+            Log.d(TAG, "SendQuery: Error ", e);
             return new String("Error: " + e.getMessage());
         }
 
     }
-
 
 }

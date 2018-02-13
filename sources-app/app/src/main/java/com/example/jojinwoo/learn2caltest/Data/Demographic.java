@@ -1,63 +1,25 @@
 package com.example.jojinwoo.learn2caltest.Data;
 
 /**
- * Created by jojinwoo on 2018-02-07.
+ * Created by jojinwoo on 2018-02-12.
  */
 
-public class Demographic {
+public enum Demographic {
 
-    private String gender;
-    private int age;
-    private int weight_lbs;
-    private int weight_kg;
-    private int height_cm;
-    private int height_ft;
-    private int height_in;
-    private boolean isSaved;
+    GENDER, AGE, WEIGHT_KG, WEIGHT_LBS, HEIGHT_CM, HEIGHT_FT, HEIGHT_IN;
 
-    public Demographic()
-    {
+    private String value;
 
+    Demographic() {
+        this.value = null;
     }
 
-    public void setGender()
-    {
-
+    public String getValue() {
+        return this.value;
     }
 
-    public void setAge()
-    {
-
-    }
-
-    public void setWeight_lbs()
-    {
-
-    }
-
-    public void setWeight_kg()
-    {
-
-    }
-
-    public void setHeight_cm()
-    {
-
-    }
-
-    public void setHeight_ft()
-    {
-
-    }
-
-    public void setHeight_in()
-    {
-
-    }
-
-    public void setSaved()
-    {
-
+    public void setValue(String value) {
+        this.value = value;
     }
 
 }

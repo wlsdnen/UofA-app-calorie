@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:replace="android:icon,android:theme"
         >
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,10 +23,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Demographic" android:label="Demographic" android:configChanges="orientation|keyboardHidden|screenSize"  />
-        <activity android:name=".Quiz" android:label="Quiz" android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity android:name=".Score" android:label="Score" android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity android:name=".Final" android:label="Final" android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".Activity.DemographicActivity" android:label="Demographic" android:configChanges="orientation|keyboardHidden|screenSize"  />
+        <activity android:name=".Activity.QuizActivity" android:label="Quiz" android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".Activity.ScoreActivity" android:label="Score" android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity android:name=".Activity.FinalActivity" android:label="Final" android:configChanges="orientation|keyboardHidden|screenSize" />
 
     </application>
 
