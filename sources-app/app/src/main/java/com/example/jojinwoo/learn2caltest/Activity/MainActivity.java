@@ -2,6 +2,7 @@ package com.example.jojinwoo.learn2caltest.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -15,6 +16,7 @@ import com.example.jojinwoo.learn2caltest.R;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     private static Context contextOfMainActivity;
+    private DataManager dataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,14 +30,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btnAbout).setOnClickListener(this);
 
         initDataManager();
-        DataManager.getInstance(contextOfMainActivity);
+        dataManager = DataManager.getInstance(contextOfMainActivity);
     }
 
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
             case R.id.btnStart:
+                dataManager.shuffleImages();
                 Intent intent = new Intent(this, QuizActivity.class);
                 startActivity(intent);
                 break;

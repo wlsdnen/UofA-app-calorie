@@ -101,22 +101,28 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.25" />
 
-    <LinearLayout
+    <android.support.constraint.Guideline
+        android:id="@+id/guideV1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <lecho.lib.hellocharts.view.ColumnChartView
+        android:id="@+id/chart"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnNext"
+        app:layout_constraintEnd_toStartOf="@+id/guideV2"
+        app:layout_constraintStart_toStartOf="@+id/guideV1"
+        app:layout_constraintTop_toTopOf="@+id/guideGraphTop"></lecho.lib.hellocharts.view.ColumnChartView>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideV2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/guideGraphDown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideGraphTop">
-
-        <lecho.lib.hellocharts.view.ColumnChartView
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </lecho.lib.hellocharts.view.ColumnChartView>
-
-    </LinearLayout>
+        app:layout_constraintGuide_percent="0.95" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideGraphDown"

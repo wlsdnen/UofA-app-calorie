@@ -1,13 +1,10 @@
 package com.example.jojinwoo.learn2caltest.Data;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.telephony.TelephonyManager;
-import android.util.DisplayMetrics;
-import android.util.Log;
 
-import com.example.jojinwoo.learn2caltest.Activity.MainActivity;
 import com.example.jojinwoo.learn2caltest.R;
 
 import java.io.BufferedReader;
@@ -174,6 +171,11 @@ public class DataManager {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String countryCodeValue = tm.getNetworkCountryIso();
         return countryCodeValue;
+    }
+
+    private static String getDeviceName() {
+        String reqString = Build.MANUFACTURER + "_" + Build.MODEL;
+        return reqString;
     }
 
 }

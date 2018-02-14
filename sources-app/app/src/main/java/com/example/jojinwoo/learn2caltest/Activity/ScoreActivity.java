@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jojinwoo.learn2caltest.Data.DataManager;
 import com.example.jojinwoo.learn2caltest.R;
@@ -83,22 +84,18 @@ public class ScoreActivity extends Activity {
 
     public void setText(int state)
     {
-        if (state == 1)
-        {
+        if (state == 1) {
             mention.setText(getString(R.string.over_estimation));
             mention.setTextColor(Color.BLUE);
         }
-        else if (state == -1)
-        {
+        else if (state == -1) {
             mention.setText(getString(R.string.under_estimation));
             mention.setTextColor(Color.RED);
         }
-        else
-        {
+        else {
             mention.setText(R.string.correct_estimation);
             mention.setTextColor(Color.GREEN);
         }
-
     }
 
     /**
@@ -133,6 +130,18 @@ public class ScoreActivity extends Activity {
             axisValues.add(new AxisValue(i, Integer.toString(i+ QuizActivity.OFFSET_PAGE).toCharArray()));
         }
 
+        if (numColumns < 5) {
+            for (int i = numColumns; i<5; ++i) {
+                values = new ArrayList<SubcolumnValue>();
+                values.add(new SubcolumnValue(0, Color.parseColor("#FFFFFF")));
+                Column column = new Column(values);
+                column.setHasLabels(hasLabels);
+                column.setHasLabelsOnlyForSelected(hasLabelForSelected);
+                columns.add(column);
+                axisValues.add(new AxisValue(i, Integer.toString(i+ QuizActivity.OFFSET_PAGE).toCharArray()));
+            }
+        }
+
         data = new ColumnChartData(columns);
 
         if (hasAxes) {
@@ -148,7 +157,6 @@ public class ScoreActivity extends Activity {
             data.setAxisXBottom(null);
             data.setAxisYLeft(null);
         }
-
         chart.setColumnChartData(data);
     }
 
@@ -156,6 +164,15 @@ public class ScoreActivity extends Activity {
 
         @Override
         public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
+            ImageDialogFragment fragment
+                    = ImageDialogFragment.newInstance(
+                    4,
+                    8,
+                    true,
+                    false
+            );
+            fragment.show(getFragmentManager(), "blur_sample");
+
 
         }
 
