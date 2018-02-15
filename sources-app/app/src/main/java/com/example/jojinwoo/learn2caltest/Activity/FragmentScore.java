@@ -1,10 +1,15 @@
 package com.example.jojinwoo.learn2caltest.Activity;
-import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,23 +28,22 @@ import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.ColumnChartView;
 
+import static com.example.jojinwoo.learn2caltest.Activity.QuizActivity.NUM_OF_QUIZ;
+import static com.example.jojinwoo.learn2caltest.Activity.QuizActivity.currentPage;
 import static java.lang.Math.abs;
 
 /**
  * Created by jojinwoo on 2018-01-17.
  */
 
-public class ScoreActivity extends Activity {
+public class FragmentScore extends Fragment {
 
     DataManager dataManager;
 
-    private static final int RESULT_OUT = 101;
-    private int currentPage;
-
-    TextView act;
-    TextView est;
-    TextView mention;
-    TextView mPage;
+    TextView tvActual;
+    TextView tvEstimate;
+    TextView tvResult;
+    Button mNextBtn;
 
     private ColumnChartView chart;
     private ColumnChartData data;
@@ -49,52 +53,65 @@ public class ScoreActivity extends Activity {
     private boolean hasLabels = false;
     private boolean hasLabelForSelected = false;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_score);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        act = (TextView)findViewById(R.id.realValue);
-        est = (TextView)findViewById(R.id.estimateValue);
-        mention = (TextView)findViewById(R.id.result_mention);
-        mPage = (TextView)findViewById(R.id.pageScore);
+        View root = inflater.inflate(R.layout.fragment_score, container, false);
 
-        dataManager = DataManager.getInstance(this);
+        dataManager = DataManager.getInstance(getActivity());
 
-        Intent intent = getIntent();
-        currentPage = intent.getIntExtra("currentPage", 0);
-
-        act.setText(Integer.toString(dataManager.getImageData(currentPage).getCalorie()));
-        est.setText(Integer.toString(dataManager.getImageData(currentPage).getUserAnswer()));
-        mPage.setText(Integer.toString(currentPage + QuizActivity.OFFSET_PAGE)+"/"+Integer.toString(QuizActivity.NUM_OF_QUIZ+ QuizActivity.OFFSET_PAGE));
+        tvActual = (TextView)root.findViewById(R.id.realValue);
+        tvEstimate = (TextView)root.findViewById(R.id.estimateValue);
+        tvResult = (TextView)root.findViewById(R.id.result_mention);
+        tvActual.setText(Integer.toString(dataManager.getImageData(currentPage).getCalorie()));
+        tvEstimate.setText(Integer.toString(dataManager.getImageData(currentPage).getUserAnswer()));
         setText(dataManager.getImageData(currentPage).getResult());
 
-        chart = (ColumnChartView) findViewById(R.id.chart);
+        chart = (ColumnChartView) root.findViewById(R.id.chart);
         chart.setOnValueTouchListener(new ValueTouchListener());
         setGraphData();
-    }
 
-    public void onClickNext (View v)
-    {
-        Intent intent = new Intent();
-        setResult(RESULT_OUT, intent);
-        finish();
+        mNextBtn = root.findViewById(R.id.btnNext);
+        mNextBtn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if (currentPage < NUM_OF_QUIZ) {
+                    currentPage = currentPage + 1;
+                    ((QuizActivity) getActivity()).setViewImage();
+                    ((QuizActivity) getActivity()).setViewPage();
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction tr = fm.beginTransaction();
+                    FragmentEstimate fe = new FragmentEstimate();
+                    tr.replace(R.id.frame, fe, "estimate");
+                    tr.commit();
+                }
+                else
+                {
+                    currentPage = 0;
+                    dataManager.shuffleImages();
+                    Intent intent = new Intent(getActivity(), FinalActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        return root;
     }
 
     public void setText(int state)
     {
         if (state == 1) {
-            mention.setText(getString(R.string.over_estimation));
-            mention.setTextColor(Color.BLUE);
+            tvResult.setText(getString(R.string.over_estimation));
+            tvResult.setTextColor(Color.BLUE);
         }
         else if (state == -1) {
-            mention.setText(getString(R.string.under_estimation));
-            mention.setTextColor(Color.RED);
+            tvResult.setText(getString(R.string.under_estimation));
+            tvResult.setTextColor(Color.RED);
         }
         else {
-            mention.setText(R.string.correct_estimation);
-            mention.setTextColor(Color.GREEN);
+            tvResult.setText(R.string.correct_estimation);
+            tvResult.setTextColor(Color.GREEN);
         }
     }
 
@@ -148,7 +165,7 @@ public class ScoreActivity extends Activity {
             Axis axisX = new Axis(axisValues);
             Axis axisY = new Axis().setHasLines(true);
             if (hasAxesNames) {
-                axisX.setName("QuizActivity");
+                axisX.setName("Quiz");
                 axisY.setName("Erros");
             }
             data.setAxisXBottom(axisX);
@@ -164,16 +181,7 @@ public class ScoreActivity extends Activity {
 
         @Override
         public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-            ImageDialogFragment fragment
-                    = ImageDialogFragment.newInstance(
-                    4,
-                    8,
-                    true,
-                    false
-            );
-            fragment.show(getFragmentManager(), "blur_sample");
-
-
+            Toast.makeText(getActivity(), Integer.toString((int)value.getValue()), Toast.LENGTH_LONG);
         }
 
         @Override

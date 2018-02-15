@@ -53,24 +53,25 @@ public class Image {
         int actual = this.calorie;
         int estimate = this.userAnswer;
 
-        int state = -1;
+        int result = -1;
         double tolerance = 0;
 
         // Accuracy
         if(actual < 100) { tolerance = 0.0005 * pow(actual, 2) + 0.1 * actual + 5; }
         else { tolerance = 0.2 * actual; }
 
-        if ((abs(actual - estimate) > tolerance) && ((actual - estimate) < 0)) { state = 1; }
-        else if ((abs(actual - estimate) > tolerance) && ((actual - estimate) > 0)) { state = -1; }
-        else { state = 0; }
+        if ((abs(actual - estimate) > tolerance) && ((actual - estimate) < 0)) { result = 1; }
+        else if ((abs(actual - estimate) > tolerance) && ((actual - estimate) > 0)) { result = -1; }
+        else { result = 0; }
 
-        this.result = state;
+        this.result = result;
     }
+
+    public void setError() { this.error = -1 * (this.calorie - this.userAnswer); }
 
     public void submitAnswer(int estimate) {
         setUserAnswer(estimate);
         setError();
         setResult();
     }
-    public void setError() { this.error = -1 * (this.calorie - this.userAnswer); }
 }

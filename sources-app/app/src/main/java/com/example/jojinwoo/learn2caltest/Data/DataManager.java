@@ -90,14 +90,6 @@ public class DataManager {
         return imgObj.get(index);
     }
 
-    public int getCurrentIdx(){
-        return this.currentIdx;
-    }
-
-    public void setCurrentIdx(){
-        this.currentIdx++;
-    }
-
     public void initUserInfo(Context context) {
 
         for (User type : User.values())

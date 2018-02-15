@@ -114,5 +114,4 @@ public class FinalActivity extends AppCompatActivity implements View.OnClickList
     {
         super.onPause();
     }
-
 }

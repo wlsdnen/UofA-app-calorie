@@ -17,7 +17,7 @@ import fr.tvbarthel.lib.blurdialogfragment.BlurDialogFragment;
 /**
  * Simple fragment with blur effect behind.
  */
-public class ImageDialogFragment extends BlurDialogFragment {
+public class FragmentImageDialog extends BlurDialogFragment {
 
     /**
      * Bundle key used to start the blur dialog with a given scale factor (float).
@@ -53,11 +53,11 @@ public class ImageDialogFragment extends BlurDialogFragment {
      * @param debug           debug policy.
      * @return well instantiated fragment.
      */
-    public static ImageDialogFragment newInstance(int radius,
-                                                   float downScaleFactor,
-                                                   boolean dimming,
-                                                   boolean debug) {
-        ImageDialogFragment fragment = new ImageDialogFragment();
+    public static FragmentImageDialog newInstance(int radius,
+                                                  float downScaleFactor,
+                                                  boolean dimming,
+                                                  boolean debug) {
+        FragmentImageDialog fragment = new FragmentImageDialog();
         Bundle args = new Bundle();
         args.putInt(
                 BUNDLE_KEY_BLUR_RADIUS,
@@ -101,10 +101,7 @@ public class ImageDialogFragment extends BlurDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.image_dialog_fragment, null);
-        TextView label = ((TextView) view.findViewById(R.id.textView));
-        label.setMovementMethod(LinkMovementMethod.getInstance());
-        Linkify.addLinks(label, Linkify.WEB_URLS);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_img_dialog, null);
         builder.setView(view);
         return builder.create();
     }

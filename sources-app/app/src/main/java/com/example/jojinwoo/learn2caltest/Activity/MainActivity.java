@@ -43,7 +43,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.btnAbout:
-                Toast.makeText(this, "NOT IMPLEMENTED YET", Toast.LENGTH_LONG).show();
+                FragmentImageDialog fragment
+                        = FragmentImageDialog.newInstance(
+                        4,
+                        8,
+                        true,
+                        false
+                );
+                fragment.show(getFragmentManager(), "blur_sample");
                 break;
         }
 

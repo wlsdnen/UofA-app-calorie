@@ -33,13 +33,13 @@
         android:textColor="@android:color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideH1"
+        app:layout_constraintBottom_toTopOf="@+id/quizGuideH1"
         app:layout_constraintEnd_toStartOf="@id/guideRight"
         app:layout_constraintStart_toStartOf="@+id/guideLeft"
         app:layout_constraintTop_toBottomOf="@+id/demo_title" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideH1"
+        android:id="@+id/DemoGuideH1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -50,13 +50,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/gender"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideLeft"
-        app:layout_constraintTop_toTopOf="@+id/guideH1" />
+        app:layout_constraintTop_toTopOf="@+id/DemoGuideH1" />
 
     <RadioGroup
         android:id="@+id/radioGender"
@@ -189,7 +189,7 @@
         app:layout_constraintTop_toTopOf="@+id/et_weight" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideH2"
+        android:id="@+id/DemoGuideH2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

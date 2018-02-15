@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideH1"
+        android:id="@+id/finalGuideH1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -38,35 +38,33 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideVerticalLeft"
-        app:layout_constraintTop_toTopOf="@+id/guideH1" />
+        app:layout_constraintTop_toTopOf="@+id/finalGuideH1" />
 
     <TextView
         android:id="@+id/correctValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideVerticalRight"
-        app:layout_constraintHorizontal_bias="0.7"
-        app:layout_constraintStart_toEndOf="@+id/result_total"
-        app:layout_constraintTop_toTopOf="@+id/guideH1" />
+        app:layout_constraintTop_toTopOf="@+id/finalGuideH1" />
 
     <TextView
         android:id="@+id/result_over"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/result_overestimation"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/result_under"
-        app:layout_constraintStart_toStartOf="@+id/result_total"
+        app:layout_constraintStart_toStartOf="@+id/guideVerticalLeft"
         app:layout_constraintTop_toBottomOf="@+id/result_total" />
 
     <TextView
@@ -74,12 +72,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/underValue"
-        app:layout_constraintStart_toStartOf="@+id/correctValue"
+        app:layout_constraintEnd_toStartOf="@+id/guideVerticalRight"
         app:layout_constraintTop_toBottomOf="@+id/correctValue" />
 
     <TextView
@@ -87,26 +86,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/result_underestimation"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideH2"
-        app:layout_constraintStart_toStartOf="@+id/result_over" />
+        app:layout_constraintBottom_toTopOf="@+id/finalGuideH2"
+        app:layout_constraintStart_toStartOf="@+id/guideVerticalLeft" />
 
     <TextView
         android:id="@+id/underValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideH2"
-        app:layout_constraintStart_toStartOf="@+id/overValue" />
+        app:layout_constraintBottom_toTopOf="@+id/finalGuideH2"
+        app:layout_constraintEnd_toStartOf="@+id/guideVerticalRight" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideH2"
+        android:id="@+id/finalGuideH2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
