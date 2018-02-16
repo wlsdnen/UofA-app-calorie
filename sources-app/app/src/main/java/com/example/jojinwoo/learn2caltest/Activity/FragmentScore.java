@@ -25,12 +25,12 @@ import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.ColumnChartView;
 
 import static com.example.jojinwoo.learn2caltest.Activity.QuizActivity.NUM_OF_QUIZ;
 import static com.example.jojinwoo.learn2caltest.Activity.QuizActivity.currentPage;
-import static java.lang.Math.abs;
 
 /**
  * Created by jojinwoo on 2018-01-17.
@@ -50,7 +50,7 @@ public class FragmentScore extends Fragment {
 
     private boolean hasAxes = true;
     private boolean hasAxesNames = true;
-    private boolean hasLabels = false;
+    private boolean hasLabels = true;
     private boolean hasLabelForSelected = false;
 
     @Nullable
@@ -175,6 +175,13 @@ public class FragmentScore extends Fragment {
             data.setAxisYLeft(null);
         }
         chart.setColumnChartData(data);
+
+        if (numColumns > 10) {
+            Viewport v = new Viewport(chart.getMaximumViewport());
+            v.left = v.width() - 11;
+            chart.setCurrentViewport(v);
+        }
+
     }
 
     private class ValueTouchListener implements ColumnChartOnValueSelectListener {
@@ -191,5 +198,5 @@ public class FragmentScore extends Fragment {
         }
 
     }
-
+    
 }

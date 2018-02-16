@@ -36,11 +36,6 @@ public class QuizActivity extends AppCompatActivity {
 
     private DataManager dataManager;
 
-    // UI objects
-    TextView mPage;
-    //
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +46,8 @@ public class QuizActivity extends AppCompatActivity {
 //        else {
         currentPage = DEFAULT_VALUE;
 
-        // instance
         dataManager = DataManager.getInstance(this);
 
-        // UI components
         FragmentManager fm = getFragmentManager();
         FragmentTransaction tr = fm.beginTransaction();
         FragmentEstimate fe = new FragmentEstimate();

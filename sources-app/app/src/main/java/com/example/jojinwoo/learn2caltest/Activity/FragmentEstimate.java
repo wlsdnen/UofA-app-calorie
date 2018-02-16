@@ -39,7 +39,8 @@ public class FragmentEstimate extends Fragment {
     TextView mValue;
     Button mCheckBtn;
 
-    String time_start, time_end;
+    String time_start;
+    String time_end;
 
     @Nullable
     @Override

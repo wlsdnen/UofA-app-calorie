@@ -6,7 +6,13 @@ package com.example.jojinwoo.learn2caltest.Data;
 
 public enum Demographic {
 
-    GENDER, AGE, WEIGHT_KG, WEIGHT_LBS, HEIGHT_CM, HEIGHT_FT, HEIGHT_IN;
+    GENDER,
+    AGE,
+    WEIGHT_KG,
+    WEIGHT_LBS,
+    HEIGHT_CM,
+    HEIGHT_FT,
+    HEIGHT_IN;
 
     private String value;
 
